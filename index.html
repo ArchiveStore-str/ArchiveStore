@@ -13,9 +13,6 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <!-- jsPDF & AutoTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -600,9 +597,7 @@
             transition: var(--transition);
         }
 
-        .modal-backdrop.active .modal {
-            transform: scale(1);
-        }
+        .modal-backdrop.active .modal { transform: scale(1); }
 
         .modal-header {
             padding: 1.25rem 1.5rem;
@@ -612,10 +607,7 @@
             justify-content: space-between;
         }
 
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
+        .modal-title { font-size: 1.2rem; font-weight: 700; }
 
         .modal-close {
             background: transparent;
@@ -664,9 +656,26 @@
             box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
+        textarea.form-control { min-height: 100px; resize: vertical; }
+
+        .image-preview-box {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-body);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            margin-top: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .toast-container {
@@ -808,7 +817,7 @@
                 <div class="controls-bar" id="catalog-anchor">
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="searchInput" class="search-input" placeholder="Cari nama map (misal: Cyberpunk, Obby, Club)..." oninput="renderMarketplace()">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Cari nama map..." oninput="renderMarketplace()">
                     </div>
                     <div class="category-pills" id="categoryPills"></div>
                 </div>
@@ -852,6 +861,7 @@
                     </div>
                     <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                         <button class="btn-primary" onclick="switchView('admin-products')"><i class="fa-solid fa-box-archive"></i> Kelola Produk</button>
+                        <button class="btn-outline" onclick="openChangePasswordModal()"><i class="fa-solid fa-key"></i> Ubah Password Admin</button>
                         <button class="btn-outline" onclick="exportPDFReport()"><i class="fa-solid fa-file-pdf"></i> Download PDF Report</button>
                     </div>
                 </div>
@@ -932,19 +942,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 6: ADMIN PORTFOLIO MANAGEMENT -->
-            <section id="view-admin-portfolio" class="section-view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                    <div>
-                        <h2 style="font-size: 2rem; font-weight: 800;">Manajemen Portfolio</h2>
-                        <p style="color: var(--text-muted);">Kelola showcase karya map Anda.</p>
-                    </div>
-                    <button class="btn-primary" onclick="openAddPortfolioModal()"><i class="fa-solid fa-plus"></i> Tambah Portfolio</button>
-                </div>
-
-                <div class="portfolio-grid" id="adminPortfolioGrid"></div>
-            </section>
-
         </main>
     </div>
 
@@ -1014,7 +1011,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ORDER SUCCESS RECEIPT -->
+    <!-- MODAL: RECEIPT -->
     <div class="modal-backdrop" id="receiptModal">
         <div class="modal" style="text-align: center;">
             <div class="modal-header">
@@ -1051,14 +1048,6 @@
                     <h3 id="detailPrice" style="color: var(--success); font-weight: 800; font-size: 1.5rem;"></h3>
                 </div>
                 <p id="detailDesc" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;"></p>
-                <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Spesifikasi Map Studio:</h4>
-                    <ul style="color: var(--text-main); font-size: 0.85rem; padding-left: 1.25rem; line-height: 1.6;">
-                        <li>Format File: Roblox Place File (.rbxl)</li>
-                        <li>Lighting: Realistic Future & Shadow Map Preset</li>
-                        <li>Optimization: High FPS Anti-Lag Optimized</li>
-                    </ul>
-                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-outline" onclick="closeModal('detailModal')">Tutup</button>
@@ -1067,7 +1056,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ADMIN LOGIN -->
+    <!-- MODAL: ADMIN LOGIN (KOSONG TOTAL) -->
     <div class="modal-backdrop" id="loginModal">
         <div class="modal" style="max-width: 400px;">
             <div class="modal-header">
@@ -1078,11 +1067,11 @@
                 <form onsubmit="handleAdminLogin(event)">
                     <div class="form-group">
                         <label class="form-label">Email Admin</label>
-                        <input type="email" id="loginEmail" class="form-control" value="admin@archive.com" required>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Masukkan Email Admin..." required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Password Admin</label>
-                        <input type="password" id="loginPassword" class="form-control" value="admin123" required>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan Password Admin..." required autocomplete="off">
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">Login System</button>
                 </form>
@@ -1090,7 +1079,33 @@
         </div>
     </div>
 
-    <!-- MODAL: ADMIN ADD/EDIT PRODUCT -->
+    <!-- MODAL: UBAH PASSWORD ADMIN -->
+    <div class="modal-backdrop" id="changePassModal">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-key"></i> Pengaturan Akses Admin</h3>
+                <button class="modal-close" onclick="closeModal('changePassModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveAdminCredentials(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Admin Baru</label>
+                        <input type="email" id="newAdminEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password Admin Baru</label>
+                        <input type="password" id="newAdminPass" class="form-control" placeholder="Masukkan password baru..." required>
+                    </div>
+                    <div class="modal-footer" style="padding: 0; margin-top: 1.5rem; border: none;">
+                        <button type="button" class="btn-outline" onclick="closeModal('changePassModal')">Batal</button>
+                        <button type="submit" class="btn-primary">Simpan Kredensial</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD/EDIT PRODUCT (UPLOAD FOTO LANGSUNG) -->
     <div class="modal-backdrop" id="productFormModal">
         <div class="modal">
             <div class="modal-header">
@@ -1098,11 +1113,10 @@
                 <button class="modal-close" onclick="closeModal('productFormModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--success);">
-                    <i class="fa-solid fa-circle-info"></i> <strong>Tips:</strong> Upload foto map Anda ke <a href="https://imgbb.com" target="_blank" style="color: var(--primary);">imgbb.com</a>, lalu copy "Direct link" ke kolom URL Gambar.
-                </div>
                 <form id="productForm" onsubmit="saveProduct(event)">
                     <input type="hidden" id="editProductId">
+                    <input type="hidden" id="prodImageBase64">
+
                     <div class="form-group">
                         <label class="form-label">Nama Map *</label>
                         <input type="text" id="prodTitle" class="form-control" required placeholder="Contoh: Cyberpunk Night Club Hub">
@@ -1126,48 +1140,25 @@
                         <label class="form-label">Harga (Rp) *</label>
                         <input type="number" id="prodPrice" class="form-control" required placeholder="150000">
                     </div>
+
+                    <!-- UPLOAD FOTO LANGSUNG DARI KOMPUTER/HP -->
                     <div class="form-group">
-                        <label class="form-label">URL Gambar Preview (Ratio 16:9 disarankan) *</label>
-                        <input type="url" id="prodImage" class="form-control" placeholder="https://i.ibb.co/xxxx/foto-map.jpg" required>
+                        <label class="form-label">Upload Foto Map (Dari HP / Komputer) *</label>
+                        <input type="file" id="prodImageFile" class="form-control" accept="image/*" onchange="handleProductImageUpload(this)">
+                        <div class="image-preview-box" id="imgPreviewBox">
+                            <span id="imgPreviewText" style="color: var(--text-dim); font-size: 0.85rem;">Preview foto akan muncul di sini</span>
+                            <img id="imgPreview" src="" style="display: none;">
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label class="form-label">Deskripsi Map *</label>
                         <textarea id="prodDesc" class="form-control" required placeholder="Jelaskan keunggulan dan fitur map ini..."></textarea>
                     </div>
+                    
                     <div class="modal-footer" style="padding: 0; margin-top: 1.5rem; border: none;">
                         <button type="button" class="btn-outline" onclick="closeModal('productFormModal')">Batal</button>
                         <button type="submit" class="btn-primary">Simpan Map</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADMIN ADD PORTFOLIO -->
-    <div class="modal-backdrop" id="portfolioFormModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Tambah Portfolio Baru</h3>
-                <button class="modal-close" onclick="closeModal('portfolioFormModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="savePortfolio(event)">
-                    <input type="hidden" id="editPortfolioId">
-                    <div class="form-group">
-                        <label class="form-label">Judul Karya *</label>
-                        <input type="text" id="portTitle" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Kategori *</label>
-                        <input type="text" id="portCategory" class="form-control" required placeholder="Contoh: Obby, Club, Horror">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">URL Gambar (16:9) *</label>
-                        <input type="url" id="portImage" class="form-control" required placeholder="https://i.ibb.co/xxxx/portfolio.jpg">
-                    </div>
-                    <div class="modal-footer" style="padding: 0; margin-top: 1.5rem; border: none;">
-                        <button type="button" class="btn-outline" onclick="closeModal('portfolioFormModal')">Batal</button>
-                        <button type="submit" class="btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -1178,13 +1169,19 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // DATA (KOSONG - SIAP DIISI OLEH ADMIN)
+        // DATA & ADMIN CREDENTIALS INITIALIZATION
         let db = {
             products: JSON.parse(localStorage.getItem('archive_products')) || [],
             orders: JSON.parse(localStorage.getItem('archive_orders')) || [],
             portfolios: JSON.parse(localStorage.getItem('archive_portfolios')) || [],
             selectedCategory: 'All',
             isAdminLoggedIn: sessionStorage.getItem('archive_admin_logged') === 'true'
+        };
+
+        // Standard Default Admin Login (Bisa Diubah via Admin Panel)
+        let adminAccount = JSON.parse(localStorage.getItem('archive_admin_account')) || {
+            email: "admin@archive.com",
+            pass: "admin123"
         };
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1199,6 +1196,7 @@
             localStorage.setItem('archive_products', JSON.stringify(db.products));
             localStorage.setItem('archive_orders', JSON.stringify(db.orders));
             localStorage.setItem('archive_portfolios', JSON.stringify(db.portfolios));
+            localStorage.setItem('archive_admin_account', JSON.stringify(adminAccount));
         }
 
         function switchView(viewId) {
@@ -1213,7 +1211,6 @@
 
             if (viewId === 'admin-dashboard') renderAdminDashboard();
             else if (viewId === 'admin-products') renderAdminProducts();
-            else if (viewId === 'admin-portfolio') renderAdminPortfolio();
             else if (viewId === 'portfolio') renderPortfolio();
             else if (viewId === 'marketplace') renderMarketplace();
         }
@@ -1252,7 +1249,7 @@
                         <div class="empty-state" style="grid-column: 1/-1;">
                             <i class="fa-solid fa-store-slash"></i>
                             <h3>Belum Ada Map Tersedia</h3>
-                            <p>Admin belum menambahkan produk map. Silakan Login Admin untuk mulai mengisi katalog!</p>
+                            <p>Admin belum menambahkan produk map. Silakan Login Admin untuk mulai mengunggah map Anda!</p>
                         </div>
                     `;
                 } else {
@@ -1270,14 +1267,14 @@
             grid.innerHTML = filtered.map(p => `
                 <div class="product-card">
                     <span class="product-badge">${p.category}</span>
-                    <img src="${p.image}" class="product-thumb" alt="${p.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/640x360/1E293B/94A3B8?text=No+Image'">
+                    <img src="${p.image}" class="product-thumb" alt="${p.title}" loading="lazy">
                     <div class="product-info">
                         <h3 class="product-title">${p.title}</h3>
                         <p class="product-desc">${p.description}</p>
                         <div class="product-footer">
                             <div class="product-price">Rp ${p.price.toLocaleString('id-ID')} <span>/ place</span></div>
                             <div style="display: flex; gap: 0.4rem;">
-                                <button class="btn-outline" style="padding: 0.4rem 0.7rem;" onclick="openProductDetail('${p.id}')" title="Detail"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn-outline" style="padding: 0.4rem 0.7rem;" onclick="openProductDetail('${p.id}')"><i class="fa-solid fa-eye"></i></button>
                                 <button class="btn-primary" style="padding: 0.4rem 0.8rem;" onclick="openOrderModal('${p.id}')">Order</button>
                             </div>
                         </div>
@@ -1293,20 +1290,43 @@
                     <div class="empty-state" style="grid-column: 1/-1;">
                         <i class="fa-solid fa-images"></i>
                         <h3>Belum Ada Portfolio</h3>
-                        <p>Admin belum menambahkan karya portfolio.</p>
+                        <p>Karya showcase studio akan tampil di sini.</p>
                     </div>
                 `;
                 return;
             }
             grid.innerHTML = db.portfolios.map(item => `
                 <div class="portfolio-item">
-                    <img src="${item.image}" class="portfolio-img" alt="${item.title}" onerror="this.src='https://via.placeholder.com/640x360/1E293B/94A3B8?text=No+Image'">
+                    <img src="${item.image}" class="portfolio-img" alt="${item.title}">
                     <div class="portfolio-overlay">
                         <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700;">${item.category}</span>
                         <h4 style="font-size: 1.1rem; font-weight: 700; color: white;">${item.title}</h4>
                     </div>
                 </div>
             `).join('');
+        }
+
+        // HANDLER UPLOAD FOTO LANGSUNG DARIPADA PAKAI LINK
+        function handleProductImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Ukuran foto maksimal 5MB!', 'danger');
+                    input.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    document.getElementById('prodImageBase64').value = base64Image;
+                    
+                    const imgPreview = document.getElementById('imgPreview');
+                    imgPreview.src = base64Image;
+                    imgPreview.style.display = 'block';
+                    document.getElementById('imgPreviewText').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function openProductDetail(id) {
@@ -1411,20 +1431,23 @@
             `;
         }
 
+        // ADMIN LOGIN AUTHENTICATION (PRIVATE & KOSONG)
         function openAdminLoginModal() {
             if (db.isAdminLoggedIn) {
                 switchView('admin-dashboard');
             } else {
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
                 openModal('loginModal');
             }
         }
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
 
-            if (email === 'admin@archive.com' && pass === 'admin123') {
+            if (email === adminAccount.email && pass === adminAccount.pass) {
                 db.isAdminLoggedIn = true;
                 sessionStorage.setItem('archive_admin_logged', 'true');
                 updateAdminStateUI();
@@ -1434,6 +1457,21 @@
             } else {
                 showToast('Email atau Password Admin Salah!', 'danger');
             }
+        }
+
+        function openChangePasswordModal() {
+            document.getElementById('newAdminEmail').value = adminAccount.email;
+            document.getElementById('newAdminPass').value = adminAccount.pass;
+            openModal('changePassModal');
+        }
+
+        function saveAdminCredentials(e) {
+            e.preventDefault();
+            adminAccount.email = document.getElementById('newAdminEmail').value.trim();
+            adminAccount.pass = document.getElementById('newAdminPass').value.trim();
+            saveToLocalStorage();
+            closeModal('changePassModal');
+            showToast('Kredensial Admin Berhasil Diperbarui!', 'success');
         }
 
         function adminLogout() {
@@ -1517,12 +1555,12 @@
             if (!db.isAdminLoggedIn) { switchView('marketplace'); return; }
             const table = document.getElementById('adminProductsTable');
             if (db.products.length === 0) {
-                table.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);"><i class="fa-solid fa-box-open" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>Belum ada produk map. Klik "Tambah Map Baru" untuk mulai mengisi katalog.</td></tr>`;
+                table.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);"><i class="fa-solid fa-box-open" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>Belum ada produk map. Klik "Tambah Map Baru" untuk mulai mengunggah.</td></tr>`;
                 return;
             }
             table.innerHTML = db.products.map(p => `
                 <tr>
-                    <td><img src="${p.image}" style="width: 60px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/60x34/1E293B/94A3B8?text=X'"></td>
+                    <td><img src="${p.image}" style="width: 60px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px;"></td>
                     <td><strong>${p.title}</strong></td>
                     <td><span class="badge badge-process">${p.category}</span></td>
                     <td style="color: var(--success); font-weight: 700;">Rp ${p.price.toLocaleString('id-ID')}</td>
@@ -1537,6 +1575,10 @@
         function openAddProductModal() {
             document.getElementById('productForm').reset();
             document.getElementById('editProductId').value = '';
+            document.getElementById('prodImageBase64').value = '';
+            document.getElementById('imgPreview').src = '';
+            document.getElementById('imgPreview').style.display = 'none';
+            document.getElementById('imgPreviewText').style.display = 'block';
             document.getElementById('productModalTitle').innerText = 'Tambah Map Baru';
             openModal('productFormModal');
         }
@@ -1548,21 +1590,34 @@
             document.getElementById('prodTitle').value = p.title;
             document.getElementById('prodCategory').value = p.category;
             document.getElementById('prodPrice').value = p.price;
-            document.getElementById('prodImage').value = p.image;
+            document.getElementById('prodImageBase64').value = p.image;
             document.getElementById('prodDesc').value = p.description;
+            
+            const imgPreview = document.getElementById('imgPreview');
+            imgPreview.src = p.image;
+            imgPreview.style.display = 'block';
+            document.getElementById('imgPreviewText').style.display = 'none';
+
             document.getElementById('productModalTitle').innerText = 'Edit Map Produk';
             openModal('productFormModal');
         }
 
         function saveProduct(e) {
             e.preventDefault();
+            const imageStr = document.getElementById('prodImageBase64').value;
+
+            if (!imageStr) {
+                showToast('Pilih dan upload foto map terlebih dahulu!', 'warning');
+                return;
+            }
+
             const editId = document.getElementById('editProductId').value;
             const prodData = {
                 id: editId || `p${Date.now()}`,
                 title: document.getElementById('prodTitle').value,
                 category: document.getElementById('prodCategory').value,
                 price: parseInt(document.getElementById('prodPrice').value),
-                image: document.getElementById('prodImage').value,
+                image: imageStr,
                 description: document.getElementById('prodDesc').value
             };
 
@@ -1587,58 +1642,6 @@
                 renderMarketplace();
                 renderAdminProducts();
                 showToast('Produk berhasil dihapus', 'warning');
-            }
-        }
-
-        // PORTFOLIO ADMIN CRUD
-        function renderAdminPortfolio() {
-            if (!db.isAdminLoggedIn) { switchView('marketplace'); return; }
-            const grid = document.getElementById('adminPortfolioGrid');
-            if (db.portfolios.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;"><i class="fa-solid fa-images"></i><h3>Belum Ada Portfolio</h3><p>Klik "Tambah Portfolio" untuk menambahkan karya Anda.</p></div>`;
-                return;
-            }
-            grid.innerHTML = db.portfolios.map((item, idx) => `
-                <div class="portfolio-item">
-                    <img src="${item.image}" class="portfolio-img" onerror="this.src='https://via.placeholder.com/640x360/1E293B/94A3B8?text=X'">
-                    <div class="portfolio-overlay" style="opacity: 1; background: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.4));">
-                        <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700;">${item.category}</span>
-                        <h4 style="font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.5rem;">${item.title}</h4>
-                        <button class="btn-outline" style="padding: 0.3rem 0.6rem; color: var(--danger); align-self: flex-start;" onclick="deletePortfolio(${idx})"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAddPortfolioModal() {
-            document.getElementById('portTitle').value = '';
-            document.getElementById('portCategory').value = '';
-            document.getElementById('portImage').value = '';
-            openModal('portfolioFormModal');
-        }
-
-        function savePortfolio(e) {
-            e.preventDefault();
-            const newItem = {
-                title: document.getElementById('portTitle').value,
-                category: document.getElementById('portCategory').value,
-                image: document.getElementById('portImage').value
-            };
-            db.portfolios.unshift(newItem);
-            saveToLocalStorage();
-            closeModal('portfolioFormModal');
-            renderPortfolio();
-            renderAdminPortfolio();
-            showToast('Portfolio berhasil ditambahkan!', 'success');
-        }
-
-        function deletePortfolio(idx) {
-            if (confirm('Hapus portfolio ini?')) {
-                db.portfolios.splice(idx, 1);
-                saveToLocalStorage();
-                renderPortfolio();
-                renderAdminPortfolio();
-                showToast('Portfolio dihapus', 'warning');
             }
         }
 
@@ -1677,14 +1680,6 @@
                 styles: { fontSize: 9, cellPadding: 3 },
                 margin: { left: 14, right: 14 }
             });
-
-            const pageCount = doc.internal.getNumberOfPages();
-            for (let i = 1; i <= pageCount; i++) {
-                doc.setPage(i);
-                doc.setFontSize(8);
-                doc.setTextColor(150, 150, 150);
-                doc.text(`Halaman ${i} dari ${pageCount} | ARCHIVE STUDIO © ${new Date().getFullYear()}`, 14, doc.internal.pageSize.height - 10);
-            }
 
             doc.save(`Laporan_ArchiveStudio_${Date.now()}.pdf`);
             showToast('Laporan PDF berhasil di-download!', 'success');
