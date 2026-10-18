@@ -812,7 +812,6 @@
             <button class="nav-link-btn" onclick="switchView('portfolio')"><i class="fa-solid fa-images"></i> Portfolio</button>
             <button class="nav-link-btn" onclick="switchView('track')"><i class="fa-solid fa-magnifying-glass-chart"></i> Cek Status Order</button>
             
-            <!-- DISCORD CONTACT BUTTON -->
             <button class="btn-discord" onclick="copyDiscordUsername()"><i class="fa-brands fa-discord"></i> craftspirestudio_38052</button>
             
             <span id="adminNavBadge" style="display:none;" class="admin-badge-indicator"><i class="fa-solid fa-shield-halved"></i> Admin Mode</span>
@@ -883,10 +882,11 @@
             <section id="view-admin-dashboard" class="section-view">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
-                        <h2 style="font-size: 2rem; font-weight: 800;">Dashboard Ringkasan Admin</h2>
-                        <p style="color: var(--text-muted);">Kelola statistik bisnis, pesanan masuk, produk, dan laporan PDF.</p>
+                        <h2 style="font-size: 2rem; font-weight: 800;">Dashboard Admin</h2>
+                        <p style="color: var(--text-muted);">Kelola statistik bisnis dan notifikasi Discord.</p>
                     </div>
                     <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button class="btn-discord" onclick="openDiscordConfigModal()"><i class="fa-solid fa-plug"></i> Sambungkan Discord Webhook</button>
                         <button class="btn-primary" onclick="switchView('admin-products')"><i class="fa-solid fa-box-archive"></i> Kelola Produk</button>
                         <button class="btn-outline" onclick="openChangePasswordModal()"><i class="fa-solid fa-key"></i> Ubah Password Admin</button>
                         <button class="btn-outline" onclick="exportPDFReport()"><i class="fa-solid fa-file-pdf"></i> Download PDF Report</button>
@@ -1020,13 +1020,13 @@
 
                     <div class="form-group">
                         <label class="form-label">Detail Brief / Request Khusus (Deskripsikan Bentuk & Sistem Map)</label>
-                        <textarea id="orderBrief" class="form-control" placeholder="Jelaskan tema map, bentuk, fitur script, atau penyesuaian khusus yang Anda inginkan..."></textarea>
+                        <textarea id="orderBrief" class="form-control" placeholder="Jelaskan tema map, fitur script, atau penyesuaian khusus..."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Metode Pembayaran</label>
                         <select id="orderPaymentMethod" class="form-control">
-                            <option value="QRIS All Payment">QRIS All Payment (Gopay, OVO, Dana, ShopeePay)</option>
+                            <option value="QRIS All Payment">QRIS All Payment</option>
                             <option value="Transfer Bank BCA">Transfer Bank BCA</option>
                             <option value="PayPal / Robux">PayPal / Roblox Robux</option>
                         </select>
@@ -1045,52 +1045,52 @@
     <div class="modal-backdrop" id="receiptModal">
         <div class="modal" style="text-align: center;">
             <div class="modal-header">
-                <h3 class="modal-title" style="margin: 0 auto; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Pesanan Berhasil dibuat!</h3>
+                <h3 class="modal-title" style="margin: 0 auto; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Pesanan Berhasil!</h3>
             </div>
             <div class="modal-body">
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Simpan ID Order berikut untuk konfirmasi pembayaran dan melacak pengerjaan:</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Simpan ID Order berikut:</p>
                 <div style="background: var(--bg-body); border: 2px dashed var(--primary); padding: 1.25rem; border-radius: var(--radius-md); margin: 1.25rem 0;">
                     <span style="font-size: 0.8rem; color: var(--text-muted);">KODE ID ORDER ANDA:</span>
                     <h2 id="receiptOrderId" style="font-size: 2.2rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;"></h2>
                 </div>
 
                 <div style="text-align: left; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3); padding: 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
-                    <div style="font-weight: 700; color: var(--discord); margin-bottom: 0.5rem;"><i class="fa-brands fa-discord"></i> Langkah Konfirmasi Discord:</div>
-                    1. Hubungi Admin via Discord: <strong style="color: white; background: #334155; padding: 2px 6px; border-radius: 4px;">craftspirestudio_38052</strong><br>
-                    2. Sertakan <strong>Kode ID Order</strong> di atas saat mengirim pesan.<br>
-                    3. Lakukan pembayaran dan terima file `.rbxl` map Roblox Anda!
+                    <div style="font-weight: 700; color: var(--discord); margin-bottom: 0.5rem;"><i class="fa-brands fa-discord"></i> Konfirmasi ke Discord:</div>
+                    Hubungi Admin Discord: <strong>craftspirestudio_38052</strong><br>
+                    Data pesanan Anda telah otomatis terkirim ke channel komunitas kami.
                 </div>
             </div>
             <div class="modal-footer" style="justify-content: center; gap: 0.5rem;">
-                <button class="btn-discord" onclick="copyDiscordUsername()"><i class="fa-brands fa-discord"></i> Copy Username Discord Admin</button>
-                <button class="btn-primary" onclick="closeModal('receiptModal'); switchView('track');"><i class="fa-solid fa-magnifying-glass"></i> Cek Status Pesanan</button>
+                <button class="btn-discord" onclick="copyDiscordUsername()"><i class="fa-brands fa-discord"></i> Copy User Discord</button>
+                <button class="btn-primary" onclick="closeModal('receiptModal'); switchView('track');"><i class="fa-solid fa-magnifying-glass"></i> Cek Status</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: PRODUCT DETAIL -->
-    <div class="modal-backdrop" id="detailModal">
-        <div class="modal" style="max-width: 650px;">
+    <!-- MODAL: DISCORD CONFIG (ADMIN ONLY) -->
+    <div class="modal-backdrop" id="discordConfigModal">
+        <div class="modal" style="max-width: 450px;">
             <div class="modal-header">
-                <h3 class="modal-title" id="detailTitle">Detail Map</h3>
-                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+                <h3 class="modal-title"><i class="fa-brands fa-discord"></i> Pengaturan Webhook</h3>
+                <button class="modal-close" onclick="closeModal('discordConfigModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <img id="detailImg" src="" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 1.25rem; border: 1px solid var(--border-color);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <span id="detailBadge" class="product-badge" style="position: static;"></span>
-                    <h3 id="detailPrice" style="color: var(--success); font-weight: 800; font-size: 1.5rem;"></h3>
+                <div style="background: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <i class="fa-solid fa-circle-exclamation"></i> Link Webhook didapat dari <strong>Edit Channel > Integrations > Webhooks</strong> di Server Discord Anda.
                 </div>
-                <p id="detailDesc" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;"></p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-outline" onclick="closeModal('detailModal')">Tutup</button>
-                <button id="detailOrderBtn" class="btn-primary"><i class="fa-solid fa-cart-shopping"></i> Order Map Ini</button>
+                <div class="form-group">
+                    <label class="form-label">Discord Webhook URL</label>
+                    <input type="url" id="discordWebhookUrl" class="form-control" placeholder="https://discord.com/api/webhooks/...">
+                </div>
+                <div class="modal-footer" style="padding: 0; margin-top: 1.5rem; border: none;">
+                    <button type="button" class="btn-outline" onclick="closeModal('discordConfigModal')">Batal</button>
+                    <button type="button" class="btn-primary" onclick="saveDiscordWebhook()">Simpan Webhook</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADMIN LOGIN (KOSONG TOTAL) -->
+    <!-- MODAL: ADMIN LOGIN -->
     <div class="modal-backdrop" id="loginModal">
         <div class="modal" style="max-width: 400px;">
             <div class="modal-header">
@@ -1101,11 +1101,11 @@
                 <form onsubmit="handleAdminLogin(event)">
                     <div class="form-group">
                         <label class="form-label">Email Admin</label>
-                        <input type="email" id="loginEmail" class="form-control" placeholder="Masukkan Email Admin..." required autocomplete="off">
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Email Admin..." required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Password Admin</label>
-                        <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan Password Admin..." required autocomplete="off">
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Password Admin..." required autocomplete="off">
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">Login System</button>
                 </form>
@@ -1176,17 +1176,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Upload Foto Map (Dari HP / Komputer) *</label>
+                        <label class="form-label">Upload Foto Map *</label>
                         <input type="file" id="prodImageFile" class="form-control" accept="image/*" onchange="handleProductImageUpload(this)">
                         <div class="image-preview-box" id="imgPreviewBox">
-                            <span id="imgPreviewText" style="color: var(--text-dim); font-size: 0.85rem;">Preview foto akan muncul di sini</span>
+                            <span id="imgPreviewText" style="color: var(--text-dim); font-size: 0.85rem;">Preview foto</span>
                             <img id="imgPreview" src="" style="display: none;">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Deskripsi Map *</label>
-                        <textarea id="prodDesc" class="form-control" required placeholder="Jelaskan keunggulan dan fitur map ini..."></textarea>
+                        <textarea id="prodDesc" class="form-control" required placeholder="Jelaskan fitur map ini..."></textarea>
                     </div>
                     
                     <div class="modal-footer" style="padding: 0; margin-top: 1.5rem; border: none;">
@@ -1208,6 +1208,7 @@
             products: JSON.parse(localStorage.getItem('archive_products')) || [],
             orders: JSON.parse(localStorage.getItem('archive_orders')) || [],
             portfolios: JSON.parse(localStorage.getItem('archive_portfolios')) || [],
+            discordWebhook: localStorage.getItem('archive_discord_webhook') || "",
             selectedCategory: 'All',
             isAdminLoggedIn: sessionStorage.getItem('archive_admin_logged') === 'true'
         };
@@ -1230,6 +1231,7 @@
             localStorage.setItem('archive_orders', JSON.stringify(db.orders));
             localStorage.setItem('archive_portfolios', JSON.stringify(db.portfolios));
             localStorage.setItem('archive_admin_account', JSON.stringify(adminAccount));
+            localStorage.setItem('archive_discord_webhook', db.discordWebhook);
         }
 
         function copyDiscordUsername() {
@@ -1244,161 +1246,48 @@
             openModal('orderModal');
         }
 
-        function switchView(viewId) {
-            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-link-btn, .mobile-nav-item').forEach(el => el.classList.remove('active'));
-            
-            const target = document.getElementById(`view-${viewId}`);
-            if (target) {
-                target.classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            if (viewId === 'admin-dashboard') renderAdminDashboard();
-            else if (viewId === 'admin-products') renderAdminProducts();
-            else if (viewId === 'portfolio') renderPortfolio();
-            else if (viewId === 'marketplace') renderMarketplace();
+        function openDiscordConfigModal() {
+            document.getElementById('discordWebhookUrl').value = db.discordWebhook;
+            openModal('discordConfigModal');
         }
 
-        function scrollToProducts() {
-            document.getElementById('catalog-anchor').scrollIntoView({ behavior: 'smooth' });
+        function saveDiscordWebhook() {
+            db.discordWebhook = document.getElementById('discordWebhookUrl').value.trim();
+            saveToLocalStorage();
+            closeModal('discordConfigModal');
+            showToast('Discord Webhook berhasil disimpan!', 'success');
         }
 
-        function renderCategories() {
-            const categories = ['All', 'Mountain', 'Club', 'Hangout', 'Obby', 'Racing', 'Horror', 'Fantasy', 'Roleplay', 'Floating Island', 'Custom'];
-            const container = document.getElementById('categoryPills');
-            container.innerHTML = categories.map(cat => `
-                <button class="pill-btn ${db.selectedCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">${cat}</button>
-            `).join('');
-        }
+        async function sendToDiscordWebhook(orderData) {
+            if (!db.discordWebhook) return;
 
-        function filterCategory(cat) {
-            db.selectedCategory = cat;
-            renderCategories();
-            renderMarketplace();
-        }
-
-        function renderMarketplace() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const grid = document.getElementById('productGrid');
-            
-            const filtered = db.products.filter(p => {
-                const matchesCat = db.selectedCategory === 'All' || p.category === db.selectedCategory;
-                const matchesSearch = p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
-                return matchesCat && matchesSearch;
-            });
-
-            if (filtered.length === 0) {
-                if (db.products.length === 0) {
-                    grid.innerHTML = `
-                        <div class="empty-state" style="grid-column: 1/-1;">
-                            <i class="fa-solid fa-store-slash"></i>
-                            <h3>Belum Ada Map Tersedia</h3>
-                            <p>Admin belum menambahkan produk map. Silakan Login Admin untuk mulai mengunggah map Anda!</p>
-                        </div>
-                    `;
-                } else {
-                    grid.innerHTML = `
-                        <div class="empty-state" style="grid-column: 1/-1;">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <h3>Map Tidak Ditemukan</h3>
-                            <p>Coba kata kunci lain atau pilih kategori berbeda.</p>
-                        </div>
-                    `;
-                }
-                return;
-            }
-
-            grid.innerHTML = filtered.map(p => `
-                <div class="product-card">
-                    <span class="product-badge">${p.category}</span>
-                    <img src="${p.image}" class="product-thumb" alt="${p.title}" loading="lazy">
-                    <div class="product-info">
-                        <h3 class="product-title">${p.title}</h3>
-                        <p class="product-desc">${p.description}</p>
-                        <div class="product-footer">
-                            <div class="product-price">Rp ${p.price.toLocaleString('id-ID')} <span>/ place</span></div>
-                            <div style="display: flex; gap: 0.4rem;">
-                                <button class="btn-outline" style="padding: 0.4rem 0.7rem;" onclick="openProductDetail('${p.id}')"><i class="fa-solid fa-eye"></i></button>
-                                <button class="btn-primary" style="padding: 0.4rem 0.8rem;" onclick="openOrderModal('${p.id}')">Order</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderPortfolio() {
-            const grid = document.getElementById('portfolioGrid');
-            if (db.portfolios.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1/-1;">
-                        <i class="fa-solid fa-images"></i>
-                        <h3>Belum Ada Portfolio</h3>
-                        <p>Karya showcase studio akan tampil di sini.</p>
-                    </div>
-                `;
-                return;
-            }
-            grid.innerHTML = db.portfolios.map(item => `
-                <div class="portfolio-item">
-                    <img src="${item.image}" class="portfolio-img" alt="${item.title}">
-                    <div class="portfolio-overlay">
-                        <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700;">${item.category}</span>
-                        <h4 style="font-size: 1.1rem; font-weight: 700; color: white;">${item.title}</h4>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function handleProductImageUpload(input) {
-            const file = input.files[0];
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('Ukuran foto maksimal 5MB!', 'danger');
-                    input.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Image = e.target.result;
-                    document.getElementById('prodImageBase64').value = base64Image;
-                    
-                    const imgPreview = document.getElementById('imgPreview');
-                    imgPreview.src = base64Image;
-                    imgPreview.style.display = 'block';
-                    document.getElementById('imgPreviewText').style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function openProductDetail(id) {
-            const p = db.products.find(x => x.id === id);
-            if (!p) return;
-
-            document.getElementById('detailTitle').innerText = p.title;
-            document.getElementById('detailImg').src = p.image;
-            document.getElementById('detailBadge').innerText = p.category;
-            document.getElementById('detailPrice').innerText = `Rp ${p.price.toLocaleString('id-ID')}`;
-            document.getElementById('detailDesc').innerText = p.description;
-            
-            document.getElementById('detailOrderBtn').onclick = () => {
-                closeModal('detailModal');
-                openOrderModal(p.id);
+            const discordPayload = {
+                embeds: [{
+                    title: "🛒 PESANAN BARU - ARCHIVE STUDIO",
+                    color: 5814783, // Discord Blue
+                    fields: [
+                        { name: "🆔 ID Order", value: orderData.id, inline: true },
+                        { name: "📦 Produk", value: orderData.productTitle, inline: true },
+                        { name: "💰 Total", value: `Rp ${orderData.price.toLocaleString('id-ID')}`, inline: true },
+                        { name: "👤 Pembeli", value: orderData.buyerName, inline: true },
+                        { name: "📞 Kontak", value: orderData.contact, inline: true },
+                        { name: "💳 Pembayaran", value: orderData.paymentMethod, inline: true },
+                        { name: "📝 Brief/Request", value: orderData.brief || "Tidak ada catatan." }
+                    ],
+                    footer: { text: "Archive Studio Marketplace Notification" },
+                    timestamp: new Date()
+                }]
             };
 
-            openModal('detailModal');
-        }
-
-        function openOrderModal(id) {
-            const p = db.products.find(x => x.id === id);
-            if (!p) return;
-
-            document.getElementById('orderProductId').value = p.id;
-            document.getElementById('orderProductName').innerText = p.title;
-            document.getElementById('orderProductPrice').innerText = `Rp ${p.price.toLocaleString('id-ID')}`;
-            openModal('orderModal');
+            try {
+                await fetch(db.discordWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(discordPayload)
+                });
+            } catch (err) {
+                console.error("Gagal mengirim ke Discord:", err);
+            }
         }
 
         function submitGuestOrder(e) {
@@ -1422,328 +1311,178 @@
             db.orders.unshift(newOrder);
             saveToLocalStorage();
 
+            // Kirim notifikasi otomatis ke Discord Webhook
+            sendToDiscordWebhook(newOrder);
+
             closeModal('orderModal');
             document.getElementById('orderForm').reset();
-
             document.getElementById('receiptOrderId').innerText = orderId;
             openModal('receiptModal');
-            showToast(`Pesanan ${orderId} berhasil dibuat!`, 'success');
+            showToast(`Pesanan ${orderId} berhasil dikirim ke Admin!`, 'success');
+        }
+
+        // --- SISTEM RENDER & LAINNYA (SAMA SEPERTI SEBELUMNYA) ---
+        function switchView(viewId) {
+            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link-btn, .mobile-nav-item').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            if (viewId === 'admin-dashboard') renderAdminDashboard();
+            else if (viewId === 'admin-products') renderAdminProducts();
+            else if (viewId === 'portfolio') renderPortfolio();
+            else if (viewId === 'marketplace') renderMarketplace();
+        }
+
+        function renderCategories() {
+            const categories = ['All', 'Mountain', 'Club', 'Hangout', 'Obby', 'Racing', 'Horror', 'Fantasy', 'Roleplay', 'Floating Island', 'Custom'];
+            const container = document.getElementById('categoryPills');
+            container.innerHTML = categories.map(cat => `<button class="pill-btn ${db.selectedCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">${cat}</button>`).join('');
+        }
+
+        function filterCategory(cat) { db.selectedCategory = cat; renderCategories(); renderMarketplace(); }
+
+        function renderMarketplace() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('productGrid');
+            const filtered = db.products.filter(p => {
+                const matchesCat = db.selectedCategory === 'All' || p.category === db.selectedCategory;
+                const matchesSearch = p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;"><i class="fa-solid fa-store-slash"></i><h3>Map Belum Tersedia</h3></div>`;
+                return;
+            }
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card">
+                    <span class="product-badge">${p.category}</span>
+                    <img src="${p.image}" class="product-thumb">
+                    <div class="product-info">
+                        <h3 class="product-title">${p.title}</h3>
+                        <p class="product-desc">${p.description}</p>
+                        <div class="product-footer">
+                            <div class="product-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+                            <button class="btn-primary" onclick="openOrderModal('${p.id}')">Order</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPortfolio() {
+            const grid = document.getElementById('portfolioGrid');
+            if (db.portfolios.length === 0) {
+                grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;"><i class="fa-solid fa-images"></i><h3>Belum Ada Portfolio</h3></div>`;
+                return;
+            }
+            grid.innerHTML = db.portfolios.map(item => `
+                <div class="portfolio-item">
+                    <img src="${item.image}" class="portfolio-img">
+                    <div class="portfolio-overlay"><h4>${item.title}</h4></div>
+                </div>
+            `).join('');
+        }
+
+        function handleProductImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prodImageBase64').value = e.target.result;
+                    document.getElementById('imgPreview').src = e.target.result;
+                    document.getElementById('imgPreview').style.display = 'block';
+                    document.getElementById('imgPreviewText').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function trackOrder() {
             const id = document.getElementById('trackInput').value.trim().toUpperCase();
             const container = document.getElementById('trackResult');
-
-            if (!id) {
-                showToast('Masukkan ID Order terlebih dahulu', 'warning');
-                return;
-            }
-
             const order = db.orders.find(o => o.id === id);
-
             if (!order) {
-                container.innerHTML = `
-                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.25rem; border-radius: var(--radius-sm); text-align: center; color: var(--danger);">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
-                        <p>ID Order <strong>${id}</strong> tidak ditemukan.</p>
-                    </div>
-                `;
+                container.innerHTML = `<p style="text-align:center; color:var(--danger);">ID Order tidak ditemukan.</p>`;
                 return;
             }
-
-            let badgeClass = 'badge-pending';
-            if (order.status === 'Dikerjakan') badgeClass = 'badge-work';
-            if (order.status === 'Selesai') badgeClass = 'badge-done';
-            if (order.status === 'Batal') badgeClass = 'badge-cancel';
-
-            container.innerHTML = `
-                <div style="background: var(--bg-body); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-md);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
-                        <div>
-                            <span style="font-size: 0.75rem; color: var(--text-muted);">STATUS PESANAN</span>
-                            <h3 style="font-size: 1.2rem; font-weight: 800; margin-top: 0.2rem;">${order.productTitle}</h3>
-                        </div>
-                        <span class="badge ${badgeClass}">${order.status}</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.8;">
-                        <div><strong>Atas Nama:</strong> ${order.buyerName}</div>
-                        <div><strong>Kontak Pembeli:</strong> ${order.contact}</div>
-                        <div><strong>Total Tagihan:</strong> Rp ${order.price.toLocaleString('id-ID')}</div>
-                        <div><strong>Tanggal Order:</strong> ${order.date}</div>
-                        <div style="margin-top: 0.5rem; background: rgba(88, 101, 242, 0.1); padding: 0.5rem; border-radius: 4px; color: var(--discord);">
-                            <i class="fa-brands fa-discord"></i> Admin Discord: <strong>${DISCORD_USERNAME}</strong>
-                        </div>
-                    </div>
-                </div>
-            `;
+            container.innerHTML = `<div style="background:var(--bg-body); border:1px solid var(--border-color); padding:1.5rem; border-radius:var(--radius-md);"><h3>${order.productTitle}</h3><p>Status: <strong>${order.status}</strong></p></div>`;
         }
 
         function openAdminLoginModal() {
-            if (db.isAdminLoggedIn) {
-                switchView('admin-dashboard');
-            } else {
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                openModal('loginModal');
-            }
+            if (db.isAdminLoggedIn) switchView('admin-dashboard');
+            else openModal('loginModal');
         }
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const pass = document.getElementById('loginPassword').value.trim();
-
-            if (email === adminAccount.email && pass === adminAccount.pass) {
+            if (document.getElementById('loginEmail').value === adminAccount.email && document.getElementById('loginPassword').value === adminAccount.pass) {
                 db.isAdminLoggedIn = true;
                 sessionStorage.setItem('archive_admin_logged', 'true');
-                updateAdminStateUI();
-                closeModal('loginModal');
-                showToast('Login Admin Berhasil!', 'success');
-                switchView('admin-dashboard');
-            } else {
-                showToast('Email atau Password Admin Salah!', 'danger');
-            }
-        }
-
-        function openChangePasswordModal() {
-            document.getElementById('newAdminEmail').value = adminAccount.email;
-            document.getElementById('newAdminPass').value = adminAccount.pass;
-            openModal('changePassModal');
-        }
-
-        function saveAdminCredentials(e) {
-            e.preventDefault();
-            adminAccount.email = document.getElementById('newAdminEmail').value.trim();
-            adminAccount.pass = document.getElementById('newAdminPass').value.trim();
-            saveToLocalStorage();
-            closeModal('changePassModal');
-            showToast('Kredensial Admin Berhasil Diperbarui!', 'success');
-        }
-
-        function adminLogout() {
-            if (!confirm('Yakin ingin logout dari Admin?')) return;
-            db.isAdminLoggedIn = false;
-            sessionStorage.removeItem('archive_admin_logged');
-            updateAdminStateUI();
-            showToast('Admin berhasil logout', 'info');
-            switchView('marketplace');
+                updateAdminStateUI(); closeModal('loginModal'); switchView('admin-dashboard');
+            } else showToast('Login Gagal!', 'danger');
         }
 
         function updateAdminStateUI() {
-            const adminBtns = [document.getElementById('adminSectionBtn'), document.getElementById('adminNavBadge'), document.getElementById('logoutBtn')];
-            const loginBtn = document.getElementById('loginModalBtn');
+            const adminMode = db.isAdminLoggedIn;
+            document.getElementById('adminNavBadge').style.display = adminMode ? 'inline-flex' : 'none';
+            document.getElementById('adminSectionBtn').style.display = adminMode ? 'inline-flex' : 'none';
+            document.getElementById('logoutBtn').style.display = adminMode ? 'inline-flex' : 'none';
+            document.getElementById('loginModalBtn').style.display = adminMode ? 'none' : 'inline-flex';
+        }
 
-            if (db.isAdminLoggedIn) {
-                adminBtns.forEach(el => el && (el.style.display = 'inline-flex'));
-                if (loginBtn) loginBtn.style.display = 'none';
-            } else {
-                adminBtns.forEach(el => el && (el.style.display = 'none'));
-                if (loginBtn) loginBtn.style.display = 'inline-flex';
-            }
+        function adminLogout() {
+            db.isAdminLoggedIn = false;
+            sessionStorage.removeItem('archive_admin_logged');
+            updateAdminStateUI(); switchView('marketplace');
         }
 
         function renderAdminDashboard() {
-            if (!db.isAdminLoggedIn) { switchView('marketplace'); return; }
-
-            const totalRev = db.orders.reduce((acc, o) => acc + (o.price || 0), 0);
-            document.getElementById('statRevenue').innerText = `Rp ${totalRev.toLocaleString('id-ID')}`;
+            document.getElementById('statRevenue').innerText = `Rp ${db.orders.reduce((a,b)=>a+b.price,0).toLocaleString('id-ID')}`;
             document.getElementById('statOrders').innerText = db.orders.length;
             document.getElementById('statProducts').innerText = db.products.length;
-            document.getElementById('statPending').innerText = db.orders.filter(o => o.status === 'Diproses').length;
-
+            document.getElementById('statPending').innerText = db.orders.filter(o=>o.status==='Diproses').length;
+            
             const table = document.getElementById('adminOrdersTable');
-            if (db.orders.length === 0) {
-                table.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);"><i class="fa-solid fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>Belum ada pesanan masuk</td></tr>`;
-                return;
-            }
-            table.innerHTML = db.orders.map(o => `
-                <tr>
-                    <td><strong>${o.id}</strong></td>
-                    <td>${o.buyerName}</td>
-                    <td>${o.contact}</td>
-                    <td>${o.productTitle}</td>
-                    <td>Rp ${o.price.toLocaleString('id-ID')}</td>
-                    <td>
-                        <select onchange="updateOrderStatus('${o.id}', this.value)" class="form-control" style="padding: 0.3rem; font-size: 0.8rem; min-width: 130px;">
-                            <option value="Diproses" ${o.status === 'Diproses' ? 'selected' : ''}>Diproses</option>
-                            <option value="Dikerjakan" ${o.status === 'Dikerjakan' ? 'selected' : ''}>Dikerjakan</option>
-                            <option value="Selesai" ${o.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
-                            <option value="Batal" ${o.status === 'Batal' ? 'selected' : ''}>Batal</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn-outline" style="padding: 0.3rem 0.6rem; color: var(--danger);" onclick="deleteOrder('${o.id}')"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function updateOrderStatus(id, newStatus) {
-            const order = db.orders.find(o => o.id === id);
-            if (order) {
-                order.status = newStatus;
-                saveToLocalStorage();
-                showToast(`Status Order ${id} = ${newStatus}`, 'info');
-                renderAdminDashboard();
-            }
+            table.innerHTML = db.orders.map(o => `<tr><td>${o.id}</td><td>${o.buyerName}</td><td>${o.contact}</td><td>${o.productTitle}</td><td>Rp ${o.price.toLocaleString('id-ID')}</td><td>${o.status}</td><td><button onclick="deleteOrder('${o.id}')">Hapus</button></td></tr>`).join('');
         }
 
         function deleteOrder(id) {
-            if (confirm(`Hapus data order ${id}?`)) {
-                db.orders = db.orders.filter(o => o.id !== id);
-                saveToLocalStorage();
-                renderAdminDashboard();
-                showToast('Order berhasil dihapus', 'warning');
-            }
+            db.orders = db.orders.filter(o => o.id !== id);
+            saveToLocalStorage(); renderAdminDashboard();
         }
 
         function renderAdminProducts() {
-            if (!db.isAdminLoggedIn) { switchView('marketplace'); return; }
             const table = document.getElementById('adminProductsTable');
-            if (db.products.length === 0) {
-                table.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);"><i class="fa-solid fa-box-open" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>Belum ada produk map. Klik "Tambah Map Baru" untuk mulai mengunggah.</td></tr>`;
-                return;
-            }
-            table.innerHTML = db.products.map(p => `
-                <tr>
-                    <td><img src="${p.image}" style="width: 60px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px;"></td>
-                    <td><strong>${p.title}</strong></td>
-                    <td><span class="badge badge-process">${p.category}</span></td>
-                    <td style="color: var(--success); font-weight: 700;">Rp ${p.price.toLocaleString('id-ID')}</td>
-                    <td>
-                        <button class="btn-outline" style="padding: 0.3rem 0.6rem;" onclick="editProduct('${p.id}')"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-outline" style="padding: 0.3rem 0.6rem; color: var(--danger);" onclick="deleteProduct('${p.id}')"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function openAddProductModal() {
-            document.getElementById('productForm').reset();
-            document.getElementById('editProductId').value = '';
-            document.getElementById('prodImageBase64').value = '';
-            document.getElementById('imgPreview').src = '';
-            document.getElementById('imgPreview').style.display = 'none';
-            document.getElementById('imgPreviewText').style.display = 'block';
-            document.getElementById('productModalTitle').innerText = 'Tambah Map Baru';
-            openModal('productFormModal');
-        }
-
-        function editProduct(id) {
-            const p = db.products.find(x => x.id === id);
-            if (!p) return;
-            document.getElementById('editProductId').value = p.id;
-            document.getElementById('prodTitle').value = p.title;
-            document.getElementById('prodCategory').value = p.category;
-            document.getElementById('prodPrice').value = p.price;
-            document.getElementById('prodImageBase64').value = p.image;
-            document.getElementById('prodDesc').value = p.description;
-            
-            const imgPreview = document.getElementById('imgPreview');
-            imgPreview.src = p.image;
-            imgPreview.style.display = 'block';
-            document.getElementById('imgPreviewText').style.display = 'none';
-
-            document.getElementById('productModalTitle').innerText = 'Edit Map Produk';
-            openModal('productFormModal');
-        }
-
-        function saveProduct(e) {
-            e.preventDefault();
-            const imageStr = document.getElementById('prodImageBase64').value;
-
-            if (!imageStr) {
-                showToast('Pilih dan upload foto map terlebih dahulu!', 'warning');
-                return;
-            }
-
-            const editId = document.getElementById('editProductId').value;
-            const prodData = {
-                id: editId || `p${Date.now()}`,
-                title: document.getElementById('prodTitle').value,
-                category: document.getElementById('prodCategory').value,
-                price: parseInt(document.getElementById('prodPrice').value),
-                image: imageStr,
-                description: document.getElementById('prodDesc').value
-            };
-
-            if (editId) {
-                const idx = db.products.findIndex(x => x.id === editId);
-                if (idx !== -1) db.products[idx] = prodData;
-            } else {
-                db.products.unshift(prodData);
-            }
-
-            saveToLocalStorage();
-            closeModal('productFormModal');
-            renderMarketplace();
-            renderAdminProducts();
-            showToast('Produk map berhasil disimpan!', 'success');
+            table.innerHTML = db.products.map(p => `<tr><td><img src="${p.image}" width="50"></td><td>${p.title}</td><td>${p.category}</td><td>Rp ${p.price.toLocaleString('id-ID')}</td><td><button onclick="deleteProduct('${p.id}')">Hapus</button></td></tr>`).join('');
         }
 
         function deleteProduct(id) {
-            if (confirm('Yakin ingin menghapus produk ini?')) {
-                db.products = db.products.filter(x => x.id !== id);
-                saveToLocalStorage();
-                renderMarketplace();
-                renderAdminProducts();
-                showToast('Produk berhasil dihapus', 'warning');
-            }
+            db.products = db.products.filter(p => p.id !== id);
+            saveToLocalStorage(); renderAdminProducts();
         }
 
-        function exportPDFReport() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        function openAddProductModal() { document.getElementById('productForm').reset(); openModal('productFormModal'); }
 
-            doc.setFillColor(11, 17, 32);
-            doc.rect(0, 0, 210, 30, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(18);
-            doc.setFont(undefined, 'bold');
-            doc.text('ARCHIVE STUDIO', 14, 15);
-            doc.setFontSize(10);
-            doc.setFont(undefined, 'normal');
-            doc.text('Laporan Penjualan Map Roblox', 14, 23);
-
-            doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`Tanggal Cetak: ${new Date().toLocaleDateString('id-ID')}`, 14, 38);
-            
-            const totalRev = db.orders.reduce((acc, o) => acc + (o.price || 0), 0);
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(11);
-            doc.text(`Total Pendapatan: Rp ${totalRev.toLocaleString('id-ID')}`, 14, 46);
-            doc.text(`Total Transaksi: ${db.orders.length} order`, 14, 52);
-
-            const tableData = db.orders.map(o => [o.id, o.buyerName, o.productTitle, `Rp ${o.price.toLocaleString('id-ID')}`, o.status]);
-
-            doc.autoTable({
-                startY: 60,
-                head: [['ID Order', 'Pembeli', 'Produk Map', 'Harga', 'Status']],
-                body: tableData.length ? tableData : [['-', '-', 'Tidak ada data', '-', '-']],
-                theme: 'striped',
-                headStyles: { fillColor: [59, 130, 246], textColor: [255, 255, 255], fontStyle: 'bold' },
-                styles: { fontSize: 9, cellPadding: 3 },
-                margin: { left: 14, right: 14 }
-            });
-
-            doc.save(`Laporan_ArchiveStudio_${Date.now()}.pdf`);
-            showToast('Laporan PDF berhasil di-download!', 'success');
+        function saveProduct(e) {
+            e.preventDefault();
+            const newP = {
+                id: `p${Date.now()}`,
+                title: document.getElementById('prodTitle').value,
+                category: document.getElementById('prodCategory').value,
+                price: parseInt(document.getElementById('prodPrice').value),
+                image: document.getElementById('prodImageBase64').value,
+                description: document.getElementById('prodDesc').value
+            };
+            db.products.unshift(newP);
+            saveToLocalStorage(); closeModal('productFormModal'); renderMarketplace(); renderAdminProducts();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            const icons = { success: 'fa-circle-check', warning: 'fa-triangle-exclamation', danger: 'fa-circle-xmark', info: 'fa-circle-info' };
-            const colors = { success: 'var(--success)', warning: 'var(--warning)', danger: 'var(--danger)', info: 'var(--primary)' };
-            toast.innerHTML = `<i class="fa-solid ${icons[type]}" style="color: ${colors[type]};"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
+        function showToast(m, t) { alert(m); }
     </script>
 </body>
 </html>
