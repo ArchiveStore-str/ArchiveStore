@@ -29,6 +29,7 @@
             --primary-hover: #2563EB;
             --primary-glow: rgba(59, 130, 246, 0.25);
             --accent: #8B5CF6;
+            --discord: #5865F2;
             --success: #10B981;
             --warning: #F59E0B;
             --danger: #EF4444;
@@ -171,6 +172,28 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-discord {
+            background: var(--discord);
+            color: white;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        .btn-discord:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.5);
+            background: #4752C4;
         }
 
         .btn-outline {
@@ -789,6 +812,9 @@
             <button class="nav-link-btn" onclick="switchView('portfolio')"><i class="fa-solid fa-images"></i> Portfolio</button>
             <button class="nav-link-btn" onclick="switchView('track')"><i class="fa-solid fa-magnifying-glass-chart"></i> Cek Status Order</button>
             
+            <!-- DISCORD CONTACT BUTTON -->
+            <button class="btn-discord" onclick="copyDiscordUsername()"><i class="fa-brands fa-discord"></i> craftspirestudio_38052</button>
+            
             <span id="adminNavBadge" style="display:none;" class="admin-badge-indicator"><i class="fa-solid fa-shield-halved"></i> Admin Mode</span>
             
             <button id="adminSectionBtn" class="nav-link-btn" style="display:none;" onclick="switchView('admin-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard Admin</button>
@@ -809,6 +835,7 @@
                         <p class="hero-desc">Dapatkan map Roblox eksklusif dengan pencahayaan realistis, performa teroptimasi, dan desain visual kelas tinggi tanpa perlu mendaftar akun.</p>
                         <div class="hero-actions">
                             <button class="btn-primary" onclick="scrollToProducts()"><i class="fa-solid fa-compass"></i> Jelajahi Catalog Map</button>
+                            <button class="btn-discord" onclick="openCustomRequestModal()"><i class="fa-brands fa-discord"></i> Request Custom Map</button>
                             <button class="btn-outline" onclick="switchView('track')"><i class="fa-solid fa-receipt"></i> Cek Orderan Saya</button>
                         </div>
                     </div>
@@ -956,6 +983,9 @@
         <button class="mobile-nav-item" onclick="switchView('track')">
             <i class="fa-solid fa-receipt"></i> Cek Order
         </button>
+        <button class="mobile-nav-item" onclick="copyDiscordUsername()">
+            <i class="fa-brands fa-discord"></i> Discord
+        </button>
         <button id="mobileAdminBtn" class="mobile-nav-item" onclick="openAdminLoginModal()">
             <i class="fa-solid fa-user-lock"></i> Admin
         </button>
@@ -965,7 +995,7 @@
     <div class="modal-backdrop" id="orderModal">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">Order Map Roblox</h3>
+                <h3 class="modal-title">Form Order Map Roblox</h3>
                 <button class="modal-close" onclick="closeModal('orderModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -973,7 +1003,7 @@
                     <input type="hidden" id="orderProductId">
                     
                     <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
-                        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Map yang Dipesan:</div>
+                        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Item yang Dipesan:</div>
                         <div id="orderProductName" style="font-size: 1.1rem; font-weight: 800; margin-top: 0.2rem;"></div>
                         <div id="orderProductPrice" style="font-size: 1.2rem; font-weight: 800; color: var(--success); margin-top: 0.2rem;"></div>
                     </div>
@@ -984,13 +1014,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Kontak Aktif (WhatsApp / Discord) *</label>
-                        <input type="text" id="orderBuyerContact" class="form-control" placeholder="Contoh: Discord: Alex#1234 atau WA: 08123456789" required>
+                        <label class="form-label">Username Discord / WhatsApp Anda *</label>
+                        <input type="text" id="orderBuyerContact" class="form-control" placeholder="Contoh: Alex#1234 atau WA: 08123456789" required>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Detail Brief / Request Khusus (Opsional)</label>
-                        <textarea id="orderBrief" class="form-control" placeholder="Tuliskan jika ada penyesuaian warna, nama game, atau fitur khusus..."></textarea>
+                        <label class="form-label">Detail Brief / Request Khusus (Deskripsikan Bentuk & Sistem Map)</label>
+                        <textarea id="orderBrief" class="form-control" placeholder="Jelaskan tema map, bentuk, fitur script, atau penyesuaian khusus yang Anda inginkan..."></textarea>
                     </div>
 
                     <div class="form-group">
@@ -1015,20 +1045,24 @@
     <div class="modal-backdrop" id="receiptModal">
         <div class="modal" style="text-align: center;">
             <div class="modal-header">
-                <h3 class="modal-title" style="margin: 0 auto; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Pesanan Berhasil!</h3>
+                <h3 class="modal-title" style="margin: 0 auto; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Pesanan Berhasil dibuat!</h3>
             </div>
             <div class="modal-body">
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Simpan ID Order berikut untuk mengecek status pesanan Anda kapan saja:</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Simpan ID Order berikut untuk konfirmasi pembayaran dan melacak pengerjaan:</p>
                 <div style="background: var(--bg-body); border: 2px dashed var(--primary); padding: 1.25rem; border-radius: var(--radius-md); margin: 1.25rem 0;">
-                    <span style="font-size: 0.8rem; color: var(--text-muted);">ID ORDER ANDA:</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">KODE ID ORDER ANDA:</span>
                     <h2 id="receiptOrderId" style="font-size: 2.2rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;"></h2>
                 </div>
-                <div style="text-align: left; background: rgba(255, 255, 255, 0.03); padding: 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.6;">
-                    <strong>Petunjuk Pembayaran:</strong><br>
-                    Silakan hubungi Admin via Discord/WhatsApp dengan menyertakan Kode ID Order di atas untuk konfirmasi pembayaran dan serah terima file studio.
+
+                <div style="text-align: left; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3); padding: 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                    <div style="font-weight: 700; color: var(--discord); margin-bottom: 0.5rem;"><i class="fa-brands fa-discord"></i> Langkah Konfirmasi Discord:</div>
+                    1. Hubungi Admin via Discord: <strong style="color: white; background: #334155; padding: 2px 6px; border-radius: 4px;">craftspirestudio_38052</strong><br>
+                    2. Sertakan <strong>Kode ID Order</strong> di atas saat mengirim pesan.<br>
+                    3. Lakukan pembayaran dan terima file `.rbxl` map Roblox Anda!
                 </div>
             </div>
-            <div class="modal-footer" style="justify-content: center;">
+            <div class="modal-footer" style="justify-content: center; gap: 0.5rem;">
+                <button class="btn-discord" onclick="copyDiscordUsername()"><i class="fa-brands fa-discord"></i> Copy Username Discord Admin</button>
                 <button class="btn-primary" onclick="closeModal('receiptModal'); switchView('track');"><i class="fa-solid fa-magnifying-glass"></i> Cek Status Pesanan</button>
             </div>
         </div>
@@ -1105,7 +1139,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD/EDIT PRODUCT (UPLOAD FOTO LANGSUNG) -->
+    <!-- MODAL: ADD/EDIT PRODUCT -->
     <div class="modal-backdrop" id="productFormModal">
         <div class="modal">
             <div class="modal-header">
@@ -1141,7 +1175,6 @@
                         <input type="number" id="prodPrice" class="form-control" required placeholder="150000">
                     </div>
 
-                    <!-- UPLOAD FOTO LANGSUNG DARI KOMPUTER/HP -->
                     <div class="form-group">
                         <label class="form-label">Upload Foto Map (Dari HP / Komputer) *</label>
                         <input type="file" id="prodImageFile" class="form-control" accept="image/*" onchange="handleProductImageUpload(this)">
@@ -1169,7 +1202,8 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // DATA & ADMIN CREDENTIALS INITIALIZATION
+        const DISCORD_USERNAME = "craftspirestudio_38052";
+
         let db = {
             products: JSON.parse(localStorage.getItem('archive_products')) || [],
             orders: JSON.parse(localStorage.getItem('archive_orders')) || [],
@@ -1178,7 +1212,6 @@
             isAdminLoggedIn: sessionStorage.getItem('archive_admin_logged') === 'true'
         };
 
-        // Standard Default Admin Login (Bisa Diubah via Admin Panel)
         let adminAccount = JSON.parse(localStorage.getItem('archive_admin_account')) || {
             email: "admin@archive.com",
             pass: "admin123"
@@ -1197,6 +1230,18 @@
             localStorage.setItem('archive_orders', JSON.stringify(db.orders));
             localStorage.setItem('archive_portfolios', JSON.stringify(db.portfolios));
             localStorage.setItem('archive_admin_account', JSON.stringify(adminAccount));
+        }
+
+        function copyDiscordUsername() {
+            navigator.clipboard.writeText(DISCORD_USERNAME);
+            showToast(`Username Discord copied: ${DISCORD_USERNAME}`, 'success');
+        }
+
+        function openCustomRequestModal() {
+            document.getElementById('orderProductId').value = 'custom-request';
+            document.getElementById('orderProductName').innerText = 'Custom Map Request (Sesuai Keinginan)';
+            document.getElementById('orderProductPrice').innerText = 'Harga Menyesuaikan Request';
+            openModal('orderModal');
         }
 
         function switchView(viewId) {
@@ -1306,7 +1351,6 @@
             `).join('');
         }
 
-        // HANDLER UPLOAD FOTO LANGSUNG DARIPADA PAKAI LINK
         function handleProductImageUpload(input) {
             const file = input.files[0];
             if (file) {
@@ -1365,7 +1409,7 @@
             const orderId = `ARC-${Math.floor(1000 + Math.random() * 9000)}`;
             const newOrder = {
                 id: orderId,
-                productTitle: p ? p.title : "Custom Map",
+                productTitle: p ? p.title : "Custom Map Request",
                 price: p ? p.price : 0,
                 buyerName: document.getElementById('orderBuyerName').value,
                 contact: document.getElementById('orderBuyerContact').value,
@@ -1423,15 +1467,17 @@
                     </div>
                     <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.8;">
                         <div><strong>Atas Nama:</strong> ${order.buyerName}</div>
-                        <div><strong>Kontak:</strong> ${order.contact}</div>
+                        <div><strong>Kontak Pembeli:</strong> ${order.contact}</div>
                         <div><strong>Total Tagihan:</strong> Rp ${order.price.toLocaleString('id-ID')}</div>
                         <div><strong>Tanggal Order:</strong> ${order.date}</div>
+                        <div style="margin-top: 0.5rem; background: rgba(88, 101, 242, 0.1); padding: 0.5rem; border-radius: 4px; color: var(--discord);">
+                            <i class="fa-brands fa-discord"></i> Admin Discord: <strong>${DISCORD_USERNAME}</strong>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // ADMIN LOGIN AUTHENTICATION (PRIVATE & KOSONG)
         function openAdminLoginModal() {
             if (db.isAdminLoggedIn) {
                 switchView('admin-dashboard');
