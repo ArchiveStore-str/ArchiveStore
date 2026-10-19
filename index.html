@@ -191,7 +191,12 @@ const CONFIG = {
     <div class="fg"><label>Nama *</label><input id="oBuyer" required maxlength="60"></div>
     <div class="fg"><label>Username Discord / No. WhatsApp *</label><input id="oContact" required maxlength="60" placeholder="contoh: alex#1234 atau 08123456789"></div>
     <div class="fg"><label>Brief / Request (tema, fitur, sistem)</label><textarea id="oBrief" maxlength="900"></textarea></div>
-    <div class="fg"><label>Metode Pembayaran</label><select id="oPay"><option>QRIS All Payment</option><option>Transfer Bank BCA</option><option>PayPal / Robux</option></select></div>
+    <div class="fg"><label>Metode Pembayaran</label><select id="oPay" onchange="togglePayQr()"><option>QRIS All Payment</option><option>Transfer Bank BCA</option><option>PayPal / Robux</option></select>
+      <div id="payQr" style="margin-top:.7rem;cursor:pointer;display:flex;align-items:center;gap:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.6rem" onclick="openM('mQR')">
+        <img src="Archive_QR.png" alt="QRIS Archive Store" style="width:64px;height:64px;object-fit:cover;object-position:center 45%;border-radius:6px;background:#fff">
+        <div style="font-size:.82rem"><b>Klik untuk lihat QRIS</b><br><span style="color:var(--mut)">Scan dengan GoPay, BCA, Mandiri, BNI, BRI, dll.</span></div>
+      </div>
+    </div>
     <div class="row" style="justify-content:flex-end"><button type="button" class="bo" onclick="closeM('mOrder')">Batal</button><button class="bp" id="oSubmit"><i class="fa-solid fa-paper-plane"></i> Buat Pesanan</button></div>
   </form></div>
 </div></div>
@@ -207,6 +212,7 @@ const CONFIG = {
     <div class="msg" id="rMsg"></div>
   </div>
   <div class="row" style="justify-content:center;padding:0 1.4rem 1.4rem">
+    <button class="bp" id="rQr" onclick="openM('mQR')"><i class="fa-solid fa-qrcode"></i> Bayar via QRIS</button>
     <button class="bo" onclick="copyMsg()"><i class="fa-solid fa-copy"></i> Salin Pesan</button>
     <button class="bd" onclick="copyMsg();openChannel()"><i class="fa-brands fa-discord"></i> Buka Channel Order</button>
     <button class="bo" onclick="openDiscord()"><i class="fa-solid fa-right-to-bracket"></i> Join Server</button>
@@ -246,6 +252,16 @@ const CONFIG = {
   </form></div>
 </div></div>
 
+<!-- Modal QRIS (z-index lebih tinggi agar tampil di atas modal lain) -->
+<div class="mb" id="mQR" style="z-index:1500" onclick="if(event.target===this)closeM('mQR')"><div class="md" style="max-width:420px;text-align:center">
+  <div class="mh"><h3><i class="fa-solid fa-qrcode"></i> Bayar via QRIS</h3><button class="x" onclick="closeM('mQR')">&times;</button></div>
+  <div class="mbd">
+    <img src="Archive_QR.png" alt="QRIS ARCHIVE STORE" style="width:100%;border-radius:12px;background:#fff">
+    <p style="color:var(--mut);font-size:.85rem;margin:1rem 0">Scan dengan GoPay, BCA, Mandiri, BNI, BRI, atau e-wallet lain. Setelah bayar, kirim bukti transfer di channel order Discord.</p>
+    <a class="bp" href="Archive_QR.png" download="QRIS-ARCHIVE-STORE.png" style="text-decoration:none"><i class="fa-solid fa-download"></i> Simpan QR</a>
+  </div>
+</div></div>
+
 <div id="toasts"></div>
 
 <script>
@@ -267,6 +283,7 @@ function go(v){
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
   $('v-'+v).classList.add('on'); window.scrollTo({top:0,behavior:'smooth'});
 }
+function togglePayQr(){$('payQr').style.display=$('oPay').value.startsWith('QRIS')?'flex':'none'}
 function openDiscord(){window.open(CONFIG.DISCORD_INVITE,'_blank','noopener')}
 function openChannel(){window.open(CONFIG.DISCORD_CHANNEL_URL,'_blank','noopener')}
 
@@ -315,12 +332,19 @@ async function submitOrder(e){
   const o={id:newId(),productTitle:S.cur?S.cur.title:'Custom Map Request',price:S.cur?S.cur.price:0,
     buyerName:$('oBuyer').value.trim(),contact:$('oContact').value.trim(),brief:$('oBrief').value.trim(),
     paymentMethod:$('oPay').value,status:'Diproses'};
-  try{await fs.collection('orders').doc(o.id).set({...o,createdAt:ts()})}catch(err){console.error(err)}
+  // Simpan ke database tanpa menunggu lama: kalau lambat/gagal, pesanan tetap lanjut ke Discord
+  try{
+    await Promise.race([
+      fs.collection('orders').doc(o.id).set({...o,createdAt:ts()}),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),4000))
+    ]);
+  }catch(err){console.error(err)}
   sendWebhook(o);
   S.lastOrder=o;
   $('rId').textContent=o.id;$('rUser').textContent=CONFIG.DISCORD_USERNAME;
   $('rMsg').textContent=orderText(o);
-  e.target.reset();btn.disabled=false;closeM('mOrder');openM('mReceipt');
+  $('rQr').style.display=o.paymentMethod.startsWith('QRIS')?'':'none';
+  e.target.reset();togglePayQr();btn.disabled=false;closeM('mOrder');openM('mReceipt');
   copyMsg(true);
 }
 function orderText(o){
