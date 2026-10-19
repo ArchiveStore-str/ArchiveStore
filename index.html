@@ -128,6 +128,33 @@ textarea{min-height:100px;resize:vertical}
 .cta:focus-visible,.arr:focus-visible,.dots button:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 @media(max-width:768px){.stage{height:500px}.sl{width:210px;height:360px}.arr{display:none}}
 @media(prefers-reduced-motion:reduce){.cta,.cta::after{animation:none}.sl{transition:none}}
+
+.md.om{max-width:880px;display:grid;grid-template-columns:300px 1fr;position:relative;border-radius:22px;background:#0a0e16;border-color:rgba(255,138,31,.28);overflow:hidden;max-height:92vh}
+.mb.on .om{animation:pop .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+.omx{position:absolute;top:.7rem;right:1rem;z-index:5;width:34px;height:34px;border-radius:50%;background:rgba(7,9,13,.6)}
+.omx:hover{background:var(--pri);color:#fff}
+.oside{position:relative;min-height:540px}
+.oside .fr{border-radius:0;border:none;box-shadow:none}
+.ocap{position:absolute;left:0;right:0;bottom:0;padding:3rem 1.4rem 1.6rem;background:linear-gradient(transparent,rgba(5,7,12,.95))}
+.ocap h3{font-size:1.2rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;line-height:1.3;margin-bottom:.7rem}
+.ln2{display:block;height:2px;width:0;background:var(--pri);margin-bottom:.7rem;transition:width .7s .3s}
+.mb.on .ln2{width:44px}
+#oPrice{color:var(--acc);font-weight:700}
+.oform{padding:1.8rem 1.8rem 1.6rem;overflow-y:auto;max-height:92vh}
+.oform h2{font-size:1.6rem;font-weight:500;letter-spacing:.04em}
+.oform label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
+.oform input,.oform select,.oform textarea{background:#05070b;border-radius:10px;padding:.8rem 1rem;transition:border-color .2s,box-shadow .2s}
+.oform input:focus,.oform select:focus,.oform textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(255,138,31,.18)}
+.oform textarea{min-height:84px}
+.payqr{margin-top:.7rem;cursor:pointer;display:flex;align-items:center;gap:.8rem;background:#05070b;border:1px dashed rgba(255,138,31,.45);border-radius:10px;padding:.6rem;transition:background .2s}
+.payqr:hover{background:rgba(255,138,31,.08)}
+.payqr img{width:56px;height:56px;object-fit:cover;object-position:center 45%;border-radius:6px;background:#fff}
+.payqr b{display:block;font-size:.85rem}.payqr span{font-size:.76rem;color:var(--mut)}
+.cta.wide{width:100%;justify-content:center;padding:.9rem;font-size:.9rem;margin-top:.4rem}
+.cta:disabled{opacity:.6;animation:none}
+@media(max-width:700px){.md.om{grid-template-columns:1fr;overflow-y:auto}.oside{min-height:170px}.ocap{padding:1.8rem 1.2rem 1rem}.ocap h3{font-size:1rem;margin-bottom:.5rem}.oform{max-height:none;overflow:visible;padding:1.3rem}}
+@media(prefers-reduced-motion:reduce){.mb.on .om{animation:none}}
 </style>
 </head>
 <body>
@@ -136,6 +163,7 @@ textarea{min-height:100px;resize:vertical}
 <script>
 const CONFIG = {
   DISCORD_USERNAME: "craftspirestudio_38052",
+  ADMIN_EMAILS: ["raffzenn0968@gmail.com","archivestore321@gmail.com"], // hanya email ini yang boleh jadi admin
   // Link channel #order-here-roblox-studio (klik kanan channel > Copy Link): https://discord.com/channels/ID_SERVER/ID_CHANNEL
   DISCORD_CHANNEL_URL: "https://discord.com/channels/ISI_ID_SERVER/ISI_ID_CHANNEL",
   // Invite permanen yang dibuat DARI channel order itu (ikon orang+ di sebelah nama channel), untuk buyer yang belum join
@@ -230,21 +258,27 @@ const CONFIG = {
 </nav>
 
 <!-- Modal order -->
-<div class="mb" id="mOrder"><div class="md">
-  <div class="mh"><h3>Form Order Map</h3><button class="x" onclick="closeM('mOrder')">&times;</button></div>
-  <div class="mbd"><form onsubmit="submitOrder(event)">
-    <div class="box"><small>Item dipesan</small><div id="oName" style="font-weight:800;font-size:1.05rem"></div><div id="oPrice" style="color:var(--ok);font-weight:800"></div></div>
-    <div class="fg"><label>Nama *</label><input id="oBuyer" required maxlength="60"></div>
-    <div class="fg"><label>Username Discord / No. WhatsApp *</label><input id="oContact" required maxlength="60" placeholder="contoh: alex#1234 atau 08123456789"></div>
-    <div class="fg"><label>Brief / Request (tema, fitur, sistem)</label><textarea id="oBrief" maxlength="900"></textarea></div>
-    <div class="fg"><label>Metode Pembayaran</label><select id="oPay" onchange="togglePayQr()"><option>QRIS All Payment</option><option>Transfer Bank BCA</option><option>PayPal / Robux</option></select>
-      <div id="payQr" style="margin-top:.7rem;cursor:pointer;display:flex;align-items:center;gap:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.6rem" onclick="openM('mQR')">
-        <img data-qr="src" alt="QRIS Archive Store" style="width:64px;height:64px;object-fit:cover;object-position:center 45%;border-radius:6px;background:#fff">
-        <div style="font-size:.82rem"><b>Klik untuk lihat QRIS</b><br><span style="color:var(--mut)">Scan dengan GoPay, BCA, Mandiri, BNI, BRI, dll.</span></div>
+<div class="mb" id="mOrder" onclick="if(event.target===this)closeM('mOrder')"><div class="md om">
+  <button class="x omx" onclick="closeM('mOrder')" aria-label="Tutup">&times;</button>
+  <div class="oside">
+    <div class="fr" id="oFrame"><i class="fa-regular fa-image"></i></div>
+    <div class="ocap"><h3 id="oName"></h3><span class="ln2"></span><div id="oPrice"></div></div>
+  </div>
+  <form class="oform" onsubmit="submitOrder(event)">
+    <h2>Form Order Map</h2>
+    <p class="sub" style="margin-bottom:1.4rem">Isi data singkat. Pesananmu langsung kami terima di Discord.</p>
+    <div class="fg"><label>Nama</label><input id="oBuyer" required maxlength="60" placeholder="Nama kamu"></div>
+    <div class="fg"><label>Discord / WhatsApp</label><input id="oContact" required maxlength="60" placeholder="alex#1234 atau 08123456789"></div>
+    <div class="fg"><label>Brief atau request</label><textarea id="oBrief" maxlength="900" placeholder="Tema map, fitur script, atau penyesuaian khusus"></textarea></div>
+    <div class="fg"><label>Metode pembayaran</label>
+      <select id="oPay" onchange="togglePayQr()"><option>QRIS All Payment</option><option>Transfer Bank BCA</option><option>PayPal / Robux</option></select>
+      <div id="payQr" class="payqr" onclick="openM('mQR')">
+        <img data-qr="src" alt="QRIS Archive Store">
+        <div><b>Klik untuk lihat QRIS</b><span>Scan dengan GoPay, BCA, Mandiri, BNI, BRI, dll.</span></div>
       </div>
     </div>
-    <div class="row" style="justify-content:flex-end"><button type="button" class="bo" onclick="closeM('mOrder')">Batal</button><button class="bp" id="oSubmit"><i class="fa-solid fa-paper-plane"></i> Buat Pesanan</button></div>
-  </form></div>
+    <button class="cta wide" id="oSubmit"><span>Buat Pesanan</span><i class="fa-solid fa-arrow-right"></i></button>
+  </form>
 </div></div>
 
 <!-- Modal bukti pesanan -->
@@ -341,6 +375,7 @@ fs.collection('portfolios').orderBy('createdAt','desc').onSnapshot(s=>{S.portfol
 
 /* ---------- Auth admin ---------- */
 auth.onAuthStateChanged(u=>{
+  if(u&&!CONFIG.ADMIN_EMAILS.map(x=>x.toLowerCase()).includes((u.email||'').toLowerCase())){auth.signOut();toast('Akun ini bukan admin.','err');return}
   S.admin=!!u;
   $('adminBtn').style.display=u?'':'none';$('logoutBtn').style.display=u?'':'none';$('loginBtn').style.display=u?'none':'';
   if(S.unsubOrders){S.unsubOrders();S.unsubOrders=null}
@@ -351,8 +386,25 @@ auth.onAuthStateChanged(u=>{
 function openAdmin(){S.admin?go('admin'):openM('mLogin')}
 async function doLogin(e){
   e.preventDefault();
-  try{await auth.signInWithEmailAndPassword($('lEmail').value,$('lPass').value);closeM('mLogin');go('admin')}
-  catch{toast('Login gagal. Cek email dan password.','err')}
+  if(String(CONFIG.FIREBASE.apiKey).startsWith('ISI')){toast('Config Firebase di index.html belum diisi.','err');return}
+  try{await auth.signInWithEmailAndPassword($('lEmail').value.trim(),$('lPass').value);closeM('mLogin');go('admin')}
+  catch(err){
+    const m={
+      'auth/invalid-credential':'Email atau password salah, atau akun admin belum dibuat di Firebase.',
+      'auth/wrong-password':'Password salah.',
+      'auth/user-not-found':'Akun belum dibuat di Firebase Authentication.',
+      'auth/invalid-email':'Format email tidak valid.',
+      'auth/operation-not-allowed':'Metode Email/Password belum diaktifkan di Firebase Authentication.',
+      'auth/unauthorized-domain':'Domain website belum ditambahkan di Firebase (Authentication > Settings > Authorized domains).',
+      'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'API key Firebase salah. Cek lagi config di index.html.',
+      'auth/invalid-api-key':'API key Firebase salah. Cek lagi config di index.html.',
+      'auth/network-request-failed':'Koneksi gagal. Cek internet kamu.',
+      'auth/too-many-requests':'Terlalu banyak percobaan. Tunggu beberapa menit.',
+      'auth/configuration-not-found':'Authentication belum diaktifkan. Klik Get started di menu Authentication Firebase.'
+    }[err.code];
+    console.error(err);
+    toast((m||'Login gagal.')+' ['+(err.code||'error')+']','err');
+  }
 }
 
 /* ---------- Marketplace ---------- */
@@ -367,11 +419,17 @@ function renderPf(){
 }
 
 /* ---------- Order ---------- */
-function openOrder(id){
+function openOrder(id,k){
   const p=S.products.find(x=>x.id===id);
-  $('oName').textContent=p?p.title:'Custom Map Request';
-  $('oPrice').textContent=p?rp(p.price):'Harga menyesuaikan request';
-  S.cur=p||null; openM('mOrder');
+  const it=(k!==undefined&&H.items[k])||null;
+  let title,img,price;
+  if(p){title=p.title;img=p.image;price=p.price;S.cur=p}
+  else if(it){title='Request: '+it.title;img=it.img;price=0;S.cur={title,price:0}}
+  else{title='Custom Map Request';img='';price=0;S.cur=null}
+  $('oName').textContent=title;
+  $('oPrice').textContent=price?rp(price):'Harga menyesuaikan request';
+  $('oFrame').innerHTML=img?`<img src="${esc(img)}" alt="">`:'<i class="fa-regular fa-image"></i>';
+  togglePayQr();openM('mOrder');
 }
 function newId(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';const r=crypto.getRandomValues(new Uint8Array(6));r.forEach(n=>s+=a[n%a.length]);return 'ARC-'+s}
 async function submitOrder(e){
@@ -469,7 +527,7 @@ function heroItems(){
 }
 function buildHero(){
   H.items=heroItems();if(H.i>=H.items.length)H.i=0;
-  $('ring').innerHTML=H.items.map((x,k)=>`<div class="sl" onclick="heroGo(${k})"><div class="fr">${x.img?`<img src="${esc(x.img)}" alt="">`:'<i class="fa-regular fa-image"></i>'}</div><div class="cap"><h2>${esc(x.title)}</h2><span class="ln"></span><p>${esc(x.sub)}</p>${x.price?`<small>${rp(x.price)}</small>`:''}<button class="cta" onclick="event.stopPropagation();openOrder('${x.id}')"><span>${x.price?'Order Sekarang':'Request Map'}</span><i class="fa-solid fa-arrow-right"></i></button></div></div>`).join('');
+  $('ring').innerHTML=H.items.map((x,k)=>`<div class="sl" onclick="heroGo(${k})"><div class="fr">${x.img?`<img src="${esc(x.img)}" alt="">`:'<i class="fa-regular fa-image"></i>'}</div><div class="cap"><h2>${esc(x.title)}</h2><span class="ln"></span><p>${esc(x.sub)}</p>${x.price?`<small>${rp(x.price)}</small>`:''}<button class="cta" onclick="event.stopPropagation();openOrder('${x.id}',${k})"><span>${x.price?'Order Sekarang':'Request Map'}</span><i class="fa-solid fa-arrow-right"></i></button></div></div>`).join('');
   $('dots').innerHTML=H.items.map((_,k)=>`<button onclick="heroGo(${k})" aria-label="Slide ${k+1}"></button>`).join('');
   applyHero();
 }
